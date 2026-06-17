@@ -1,0 +1,43 @@
+# =========================
+# FRONTEND
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# =========================
+# BACKEND
+# =========================
+backend/vendor/
+backend/.env
+backend/.env.local
+
+# Logs
+backend/*.log
+backend/logs/
+
+# =========================
+# DOCKER
+# =========================
+docker-compose.override.yml
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Linux
+# =========================
+*~
+.DS_Store
+Thumbs.db
+
+# =========================
+# Cache
+# =========================
+.cache/
+tmp/

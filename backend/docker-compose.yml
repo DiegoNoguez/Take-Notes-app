@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: notas_postgres
+    environment:
+      POSTGRES_DB: notas_db
+      POSTGRES_USER: notas_user
+      POSTGRES_PASSWORD: admin12345
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./ini_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  php:
+    build: .
+    container_name: notas_php
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=notas_db
+      - DB_USER=notas_user
+      - DB_PASS=admin12345
+      - JWT_SECRET=c09351311ebc64fb7de4742bcc836809164a4f8561409f3a4ec1e82e7b650670
+      - JWT_EXPIRES=86400
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    restart: unless-stopped
+
+networks:
+  app-network:
+
+volumes:
+  postgres_data:
+
+
