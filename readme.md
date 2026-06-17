@@ -68,7 +68,9 @@ La base de datos es **PostgreSQL 17** (o 15, según elección). El script de ini
   `nombre VARCHAR(50) NOT NULL`  
   `precio_mensual DECIMAL(10,2)`  
   `precio_anual DECIMAL(10,2)`  
-  *Datos iniciales*: Gratuito (0), Pro (9.99/99.99), Empresa (29.99/299.99).
+  *Datos iniciales*: Gratuito (0), Pro (30/70), Empresa (150/1200).
+
+  Los precios estan dados en moneda mexicana
 
 - **nota**  
   `id_nota SERIAL PRIMARY KEY`  
@@ -111,7 +113,7 @@ La base de datos es **PostgreSQL 17** (o 15, según elección). El script de ini
 
 ## 3. API REST
 
-**Base URL**: `http://<host>:8000/api`
+**Base URL**: `http://<host>:8000/api`  url de desarrollo para produccion se utilizara una distinta.
 
 ### Autenticación
 - **Registro**: `POST /auth/register` – Body: `{ "nombre": "...", "email": "...", "password": "..." }` → Devuelve `201` con los datos del usuario (sin password).
