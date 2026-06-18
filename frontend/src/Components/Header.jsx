@@ -5,7 +5,7 @@ const Header = () => {
   const { usuario, logout } = usePage();
 
   return (
-    <header className="flex items-center justify-between px-6 py-3 bg-pink-800 border-b rounded-3xl mt-3 mx-2">
+    <header className="flex items-center justify-between px-6 py-3 bg-green-800 border-b rounded-3xl mt-3 mx-2">
       <div className="flex items-center gap-2">
         <NotepadText size={50} className="text-pink-400" />
         <span className="font-semibold text-white text-2xl tracking-tight">Take Notes</span>
