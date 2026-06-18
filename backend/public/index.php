@@ -1,8 +1,7 @@
 <?php
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// 👇 IMPORTA TODOS LOS CONTROLADORES
+// IMPORTA TODOS LOS CONTROLADORES
 use App\Controllers\AuthController;
 use App\Controllers\NoteController;
 use App\Controllers\UserController;
@@ -13,10 +12,19 @@ use App\Controllers\LogController;
 use App\Middleware\AuthMiddleware;
 
 // Cargar variables de entorno
+// safeLoad() no falla si no existe el .env (Render inyecta las vars del sistema)
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+$dotenv->safeLoad();
 
-header("Access-Control-Allow-Origin: http://localhost:5173");
+// CORS: permite múltiples orígenes
+$allowedOrigins = [
+    'http://localhost:5173',
+    'https://takenotesv1.netlify.app'
+];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
@@ -32,40 +40,39 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = str_replace('/api', '', $uri);
 $uri = trim($uri, '/');
 
-// Definición de rutas (ahora con ::class)
+// Definición de rutas
 $routes = [
     'GET' => [
-        'notes' => [NoteController::class, 'getAll'],
-        'notes/(\d+)' => [NoteController::class, 'getOne'],
-        'plans' => [PlanController::class, 'getAll'],
-        'logs' => [LogController::class, 'getAll'],
-        'subscription/active' => [SubscriptionController::class, 'getActive'],
-        'notes/(\d+)/reminder' => [ReminderController::class, 'getByNote'],
-        'user/profile' => [UserController::class, 'getProfile'],
+        'notes'                  => [NoteController::class, 'getAll'],
+        'notes/(\d+)'            => [NoteController::class, 'getOne'],
+        'plans'                  => [PlanController::class, 'getAll'],
+        'logs'                   => [LogController::class, 'getAll'],
+        'subscription/active'    => [SubscriptionController::class, 'getActive'],
+        'notes/(\d+)/reminder'   => [ReminderController::class, 'getByNote'],
+        'user/profile'           => [UserController::class, 'getProfile'],
     ],
     'POST' => [
-        'notes' => [NoteController::class, 'create'],
-        'logs' => [LogController::class, 'create'],
-        'subscription/checkout' => [SubscriptionController::class, 'createCheckoutSession'],
-        'notes/(\d+)/reminder' => [ReminderController::class, 'set'],
-        'auth/register' => [AuthController::class, 'register'],
-        'auth/login' => [AuthController::class, 'login'],
-        'stripe-webhook' => [SubscriptionController::class, 'handleStripeWebhook'],
+        'notes'                      => [NoteController::class, 'create'],
+        'logs'                       => [LogController::class, 'create'],
+        'subscription/checkout'      => [SubscriptionController::class, 'createCheckoutSession'],
+        'notes/(\d+)/reminder'       => [ReminderController::class, 'set'],
+        'auth/register'              => [AuthController::class, 'register'],
+        'auth/login'                 => [AuthController::class, 'login'],
+        'stripe-webhook'             => [SubscriptionController::class, 'handleStripeWebhook'],
     ],
     'PUT' => [
-        'notes/(\d+)' => [NoteController::class, 'update'],
-        'user/profile' => [UserController::class, 'updateProfile'],
-        'user/password' => [UserController::class, 'changePassword'],
+        'notes/(\d+)'    => [NoteController::class, 'update'],
+        'user/profile'   => [UserController::class, 'updateProfile'],
+        'user/password'  => [UserController::class, 'changePassword'],
     ],
     'DELETE' => [
-        'notes/(\d+)' => [NoteController::class, 'delete'],
-        'subscription/cancel' => [SubscriptionController::class, 'cancel'],
-        'notes/(\d+)/reminder' => [ReminderController::class, 'delete'],
-        'user/account' => [UserController::class, 'deleteAccount'],
+        'notes/(\d+)'            => [NoteController::class, 'delete'],
+        'subscription/cancel'    => [SubscriptionController::class, 'cancel'],
+        'notes/(\d+)/reminder'   => [ReminderController::class, 'delete'],
+        'user/account'           => [UserController::class, 'deleteAccount'],
     ],
 ];
 
-// Función matchRoute (sin cambios)
 function matchRoute($routes, $method, $uri) {
     if (!isset($routes[$method])) return null;
     foreach ($routes[$method] as $pattern => $handler) {
@@ -98,6 +105,7 @@ $controller = new $controllerClass();
 // Determinar si la ruta necesita autenticación
 $needAuth = !($uri === 'auth/register' || $uri === 'auth/login' || $uri === 'stripe-webhook');
 $userId = null;
+
 if ($needAuth) {
     $auth = new AuthMiddleware();
     $userId = $auth->authenticate();
