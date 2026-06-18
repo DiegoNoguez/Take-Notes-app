@@ -187,13 +187,6 @@ const Perfil = () => {
                            disabled:text-gray-400 disabled:cursor-default"
               />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-violet-400 mb-1">Plan actual</label>
-              <p className="text-sm text-gray-500 pb-1.5 border-b border-violet-50">
-                {user.plan_nombre ?? 'Gratuito'}
-              </p>
-            </div>
-
             <div className="flex gap-2 pt-1">
               {!editando ? (
                 <button type="button" onClick={() => setEditando(true)}
