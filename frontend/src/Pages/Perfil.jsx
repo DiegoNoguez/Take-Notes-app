@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 const Perfil = () => {
   const { token, logout } = usePage();
 
-  // ─── Estado del perfil ───────────────────────────────────────────────────────
   const [user, setUser]                     = useState(null);
   const [editando, setEditando]             = useState(false);
   const [nombre, setNombre]                 = useState('');
@@ -15,8 +14,8 @@ const Perfil = () => {
   const [notificaciones, setNotificaciones] = useState(true);
   const [oldPass, setOldPass]               = useState('');
   const [newPass, setNewPass]               = useState('');
+  const [confirmDelete, setConfirmDelete]   = useState(false);
 
-  // ─── Obtener perfil (GET /user/profile) ─────────────────────────────────────
   const obtenerPerfil = async () => {
     try {
       const res  = await fetch(`${BASE_URL}/user/profile`, {
@@ -32,7 +31,6 @@ const Perfil = () => {
 
   useEffect(() => { obtenerPerfil(); }, []);
 
-  // ─── Actualizar perfil (PUT /user/profile) ───────────────────────────────────
   const actualizar = async (e) => {
     e.preventDefault();
     try {
@@ -49,8 +47,6 @@ const Perfil = () => {
     } catch (err) { toast.error(err.message); }
   };
 
-  // ─── Toggle notificaciones directo sin entrar a modo edición ────────────────
-  // PUT /user/profile con solo notificaciones_activas cambiado
   const toggleNotificaciones = async () => {
     const nuevo = !notificaciones;
     setNotificaciones(nuevo);
@@ -63,12 +59,11 @@ const Perfil = () => {
       if (!res.ok) throw new Error();
       toast.success(nuevo ? 'Notificaciones activadas' : 'Notificaciones desactivadas');
     } catch {
-      setNotificaciones(!nuevo); // revierte si falla
+      setNotificaciones(!nuevo);
       toast.error('Error al actualizar notificaciones');
     }
   };
 
-  // ─── Cambiar contraseña (PUT /user/password) ────────────────────────────────
   const cambiarPass = async (e) => {
     e.preventDefault();
     try {
@@ -83,9 +78,18 @@ const Perfil = () => {
     } catch (err) { toast.error(err.message); }
   };
 
-  // ─── Eliminar cuenta (DELETE /user/account) → logout ────────────────────────
+  // ─── Eliminar cuenta: primer click pide confirmación, segundo elimina ────────
   const eliminarCuenta = async () => {
-    if (!confirm('¿Eliminar tu cuenta definitivamente? Esta acción no se puede deshacer.')) return;
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      toast('Haz click de nuevo para confirmar. Esta acción no se puede deshacer.', {
+        icon: '',
+        duration: 5000,
+      });
+      // Resetea el estado de confirmación después de 5 segundos
+      setTimeout(() => setConfirmDelete(false), 5000);
+      return;
+    }
     try {
       await fetch(`${BASE_URL}/user/account`, {
         method: 'DELETE',
@@ -105,7 +109,6 @@ const Perfil = () => {
   return (
     <div className="max-w-2xl mx-auto px-2 py-6">
 
-      {/* ── Encabezado ─────────────────────────────────────────────────────── */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-violet-700 tracking-tight">Mi perfil</h1>
         <p className="text-sm text-violet-300 mt-0.5">{user.email}</p>
@@ -113,7 +116,7 @@ const Perfil = () => {
 
       <div className="flex flex-col gap-4">
 
-        {/* ── Card: notificaciones — visible siempre, toggle directo ─────── */}
+        {/* ── Notificaciones ─────────────────────────────────────────────── */}
         <div className="bg-white border border-violet-100 rounded-2xl p-5 shadow-sm shadow-violet-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -132,9 +135,9 @@ const Perfil = () => {
                 </p>
               </div>
             </div>
-
-            {/* Toggle — llama PUT /user/profile directamente ───────────── */}
+            {/* type="button" evita que dispare el submit del form de abajo */}
             <button
+              type="button"
               onClick={toggleNotificaciones}
               className={`relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none
                 ${notificaciones ? 'bg-violet-500' : 'bg-gray-200'}`}
@@ -147,7 +150,7 @@ const Perfil = () => {
           </div>
         </div>
 
-        {/* ── Card: información personal (GET → PUT /user/profile) ───────── */}
+        {/* ── Información personal ───────────────────────────────────────── */}
         <div className="bg-white border border-violet-100 rounded-2xl p-5 shadow-sm shadow-violet-50">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-xl bg-violet-50 flex items-center justify-center">
@@ -199,7 +202,6 @@ const Perfil = () => {
                   </button>
                   <button type="button"
                     onClick={() => {
-                      // Revierte cambios al valor original del servidor
                       setEditando(false);
                       setNombre(user.nombre);
                       setEmail(user.email);
@@ -215,7 +217,7 @@ const Perfil = () => {
           </form>
         </div>
 
-        {/* ── Card: cambiar contraseña (PUT /user/password) ──────────────── */}
+        {/* ── Cambiar contraseña ─────────────────────────────────────────── */}
         <div className="bg-white border border-violet-100 rounded-2xl p-5 shadow-sm shadow-violet-50">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-xl bg-pink-50 flex items-center justify-center">
@@ -246,7 +248,7 @@ const Perfil = () => {
           </form>
         </div>
 
-        {/* ── Card: zona de peligro (DELETE /user/account) ───────────────── */}
+        {/* ── Zona de peligro ────────────────────────────────────────────── */}
         <div className="bg-white border border-pink-100 rounded-2xl p-5 shadow-sm shadow-pink-50">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-xl bg-pink-50 flex items-center justify-center">
@@ -257,10 +259,16 @@ const Perfil = () => {
           <p className="text-xs text-gray-400 mb-3">
             Esta acción eliminará tu cuenta y todos tus datos permanentemente.
           </p>
-          <button onClick={eliminarCuenta}
-            className="text-sm text-pink-500 hover:text-white hover:bg-pink-500 border border-pink-300
-                       hover:border-pink-500 px-4 py-1.5 rounded-lg font-medium transition">
-            Eliminar mi cuenta
+          <button
+            type="button"
+            onClick={eliminarCuenta}
+            className={`text-sm border px-4 py-1.5 rounded-lg font-medium transition
+              ${confirmDelete
+                ? 'bg-pink-500 text-white border-pink-500 animate-pulse'
+                : 'text-pink-500 hover:text-white hover:bg-pink-500 border-pink-300 hover:border-pink-500'
+              }`}
+          >
+            {confirmDelete ? ' Confirmar eliminación' : 'Eliminar mi cuenta'}
           </button>
         </div>
 
