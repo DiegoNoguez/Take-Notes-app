@@ -33,18 +33,32 @@ const Perfil = () => {
 
   const actualizar = async (e) => {
     e.preventDefault();
+    e.stopPropagation(); // ← agrega esto
+    if (!editando) return; // ← protección extra: si no está editando, no hace nada
+    console.log("SE EJECUTÓ ACTUALIZAR");
+
     try {
       const res = await fetch(`${BASE_URL}/user/profile`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ nombre, email, notificaciones_activas: notificaciones })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          nombre,
+          email,
+          notificaciones_activas: notificaciones
+        })
       });
       if (!res.ok) throw new Error('Error al actualizar');
       const data = await res.json();
       setUser(data);
       toast.success('Perfil actualizado');
       setEditando(false);
-    } catch (err) { toast.error(err.message); }
+
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   const toggleNotificaciones = async () => {
@@ -183,7 +197,7 @@ const Perfil = () => {
             <div>
               <label className="block text-xs font-medium text-violet-400 mb-1">Plan actual</label>
               <p className="text-sm text-gray-500 pb-1.5 border-b border-violet-50">
-                {user.plan_actual ? `Plan #${user.plan_actual}` : 'Gratuito'}
+                {user.plan_nombre ?? 'Gratuito'}
               </p>
             </div>
 

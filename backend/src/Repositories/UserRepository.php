@@ -29,7 +29,12 @@ class UserRepository
 
     public function findById(int $id): ?User
     {
-        $stmt = $this->db->prepare("SELECT * FROM usuario WHERE id_usuario = :id");
+        $stmt = $this->db->prepare("
+            SELECT u.*, p.nombre AS plan_nombre
+            FROM usuario u
+            LEFT JOIN plan p ON p.id_plan = u.plan_actual
+            WHERE u.id_usuario = :id
+        ");
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
         return $row ? new User($row) : null;
