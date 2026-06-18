@@ -21,7 +21,7 @@ class Database
         $user = $_ENV['DB_USER'] ?? 'notas_user';
         $pass = $_ENV['DB_PASS'] ?? 'secret123';
 
-        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
 
         try {
             $this->connection = new PDO($dsn, $user, $pass, [
