@@ -174,17 +174,17 @@ const ZonaTrabajo = () => {
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                   {/* Favorito */}
                   <button onClick={() => toggleFavorito(nota)}
-                    className={`p-1 rounded-md transition ${nota.favorito ? 'text-pink-500' : 'text-gray-300 hover:text-pink-400'}`}>
+                    className={`p-1 rounded-md transition ${nota.favorito ? 'text-pink-500' : 'text-gray-300 hover:text-pink-400 cursor-pointer'}`}>
                     <Star size={13} fill={nota.favorito ? 'currentColor' : 'none'} />
                   </button>
                   {/* Editar — abre modal con recordatorio */}
                   <button onClick={() => abrirEditor(nota)}
-                    className="p-1 rounded-md text-gray-300 hover:text-violet-500 transition">
+                    className="p-1 rounded-md text-gray-300 hover:text-violet-500 transition cursor-pointer">
                     <Pencil size={13} />
                   </button>
                   {/* Papelera — PUT papelera: true, no DELETE */}
                   <button onClick={() => moverPapelera(nota.id_nota)}
-                    className="p-1 rounded-md text-gray-300 hover:text-pink-500 transition">
+                    className="p-1 rounded-md text-gray-300 hover:text-pink-500 transition cursor-pointer">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -233,7 +233,7 @@ const ZonaTrabajo = () => {
               <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">
                 Editando nota
               </span>
-              <button onClick={() => setEditando(null)} className="text-gray-300 hover:text-gray-500 transition">
+              <button onClick={() => setEditando(null)} className="text-gray-300 hover:text-gray-500 transition cursor-pointer">
                 <X size={18} />
               </button>
             </div>
@@ -274,7 +274,7 @@ const ZonaTrabajo = () => {
                   {reminder && (
                     <button
                       onClick={eliminarRecordatorio}
-                      className="flex items-center gap-1 text-xs text-pink-400 hover:text-pink-600 transition"
+                      className="flex items-center gap-1 text-xs text-pink-400 hover:text-pink-600 transition cursor-pointer"
                     >
                       <BellOff size={12} /> Eliminar
                     </button>
@@ -323,7 +323,7 @@ const ZonaTrabajo = () => {
                       <button
                         onClick={guardarRecordatorio}
                         className="flex items-center gap-1.5 text-xs bg-violet-50 hover:bg-violet-100
-                                   text-violet-600 font-medium px-3 py-1.5 rounded-lg transition"
+                                   text-violet-600 font-medium px-3 py-1.5 rounded-lg transition cursor-pointer"
                       >
                         <Bell size={12} />
                         {reminder ? 'Actualizar recordatorio' : 'Agregar recordatorio'}
@@ -340,13 +340,13 @@ const ZonaTrabajo = () => {
               <button
                 onClick={guardarEdicion}
                 className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700
-                           text-white text-sm font-semibold px-5 py-2 rounded-xl transition"
+                           text-white text-sm font-semibold px-5 py-2 rounded-xl transition cursor-pointer"
               >
                 <Check size={15} /> Guardar cambios
               </button>
               <button
                 onClick={() => setEditando(null)}
-                className="text-sm text-gray-400 hover:text-gray-600 transition"
+                className="text-sm text-gray-400 hover:text-gray-600 transition cursor-pointer"
               >
                 Cancelar
               </button>

@@ -87,7 +87,7 @@ const Premium = () => {
     if (!confirmCancel) {
       setConfirmCancel(true);
       toast('Haz click de nuevo para confirmar la cancelación.', {
-        icon: '⚠️', duration: 5000,
+        icon: '', duration: 5000,
       });
       setTimeout(() => setConfirmCancel(false), 5000);
       return;
@@ -125,7 +125,7 @@ const Premium = () => {
           <button
             type="button"
             onClick={() => setCiclo('mensual')}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer
               ${ciclo === 'mensual'
                 ? 'bg-violet-600 text-white shadow-sm'
                 : 'text-gray-400 hover:text-violet-600'}`}
@@ -135,7 +135,7 @@ const Premium = () => {
           <button
             type="button"
             onClick={() => setCiclo('anual')}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer
               ${ciclo === 'anual'
                 ? 'bg-violet-600 text-white shadow-sm'
                 : 'text-gray-400 hover:text-violet-600'}`}
@@ -164,12 +164,12 @@ const Premium = () => {
           <button
             type="button"
             onClick={cancelarSuscripcion}
-            className={`text-xs font-medium border px-3 py-1.5 rounded-lg transition
+            className={`text-xs font-medium border px-3 py-1.5 rounded-lg transition cursor-pointer
               ${confirmCancel
                 ? 'bg-pink-500 text-white border-pink-500 animate-pulse'
                 : 'text-pink-400 hover:text-pink-600 border-pink-200 hover:border-pink-400'}`}
           >
-            {confirmCancel ? '⚠️ Confirmar cancelación' : 'Cancelar plan'}
+            {confirmCancel ? ' Confirmar cancelación' : 'Cancelar plan'}
           </button>
         </div>
       )}
@@ -243,7 +243,7 @@ const Premium = () => {
                 type="button"
                 onClick={() => suscribirse(plan.id_plan)}
                 disabled={esActivo || procesando === plan.id_plan || plan.precio_mensual === 0}
-                className={`w-full py-2 rounded-xl text-sm font-semibold transition
+                className={`w-full py-2 rounded-xl text-sm font-semibold transition cursor-pointer
                   ${esActivo || plan.precio_mensual === 0
                     ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
                     : 'bg-violet-600 hover:bg-violet-700 text-white'}`}

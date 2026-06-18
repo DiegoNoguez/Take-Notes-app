@@ -21,7 +21,7 @@ const PanelSup = () => {
           <button
             key={seccion}
             onClick={() => cambiarSeccion(seccion)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-pink-200 font-medium transition-all duration-150
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-pink-200 font-medium transition-all duration-150 cursor-pointer
               ${activo
                 ? 'bg-violet-100 text-pink-700'
                 : 'text-violet-500 hover:bg-pink-50 hover:text-pink-500'

@@ -76,7 +76,7 @@ const CrearNota = () => {
           <button
             type="submit"
             disabled={enviando}
-            className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-semibold px-5 py-2 rounded-xl transition"
+            className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-semibold px-5 py-2 rounded-xl transition cursor-pointer"
           >
             <PlusCircle size={15} />
             {enviando ? 'Guardando...' : 'Crear nota'}
@@ -84,7 +84,7 @@ const CrearNota = () => {
           <button
             type="button"
             onClick={() => cambiarSeccion(SECCIONES.ZONA_TRABAJO)}
-            className="text-sm text-gray-400 hover:text-gray-600 transition"
+            className="text-sm text-gray-400 hover:text-gray-600 transition cursor-pointer"
           >
             Cancelar
           </button>

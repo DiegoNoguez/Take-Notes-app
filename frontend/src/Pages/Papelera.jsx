@@ -125,7 +125,7 @@ const Papelera = () => {
                   onClick={() => restaurar(nota.id_nota)}
                   className="flex items-center gap-1.5 text-xs text-violet-500 hover:text-violet-700
                              border border-violet-100 hover:border-violet-300
-                             px-3 py-1.5 rounded-lg font-medium transition"
+                             px-3 py-1.5 rounded-lg font-medium transition cursor-pointer"
                 >
                   <RotateCcw size={12} /> Restaurar
                 </button>
@@ -134,7 +134,7 @@ const Papelera = () => {
                   onClick={() => eliminar(nota.id_nota)}
                   className="flex items-center gap-1.5 text-xs text-pink-400 hover:text-pink-600
                              border border-pink-100 hover:border-pink-300
-                             px-3 py-1.5 rounded-lg font-medium transition"
+                             px-3 py-1.5 rounded-lg font-medium transition cursor-pointer"
                 >
                   <Trash2 size={12} /> Eliminar
                 </button>

@@ -4,7 +4,7 @@ import { usePage } from "../context/PageContext";
 
 const Form = () => {
   const { login } = usePage();
-  console.log('login:', login, typeof login); // ← agregar esto
+  
   const [esRegistro, setEsRegistro] = useState(false);
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +30,7 @@ const Form = () => {
       className="flex flex-col w-full max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg"
       onSubmit={manejarSubmit}
     >
-      <h2 className="text-3xl font-bold text-violet-600 text-center mb-6">
+      <h2 className="text-3xl font-bold text-violet-600 text-center mb-6 ">
         {esRegistro ? "Crear cuenta" : "Iniciar sesión"}
       </h2>
 
@@ -67,7 +67,7 @@ const Form = () => {
       </div>
 
       <button type="submit"
-        className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 rounded-lg transition"
+        className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 rounded-lg transition cursor-pointer"
       >
         {esRegistro ? "Registrarse" : "Iniciar sesión"}
       </button>
@@ -75,7 +75,7 @@ const Form = () => {
       <p className="text-sm text-center mt-4 text-gray-600">
         {esRegistro ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}
         <button type="button" onClick={toggleModo}
-          className="ml-1 text-violet-600 hover:text-violet-800 font-medium hover:underline focus:outline-none"
+          className="ml-1 text-violet-600 hover:text-violet-800 font-medium hover:underline focus:outline-none cursor-pointer"
         >
           {esRegistro ? "Inicia sesión aquí" : "Regístrate aquí"}
         </button>

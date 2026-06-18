@@ -18,7 +18,7 @@ const Header = () => {
           </span>
           <button
             onClick={logout}
-            className="flex items-center gap-1.5 text-sm text-pink-300 hover:text-pink-100 transition"
+            className="flex items-center gap-1.5 text-sm text-pink-300 hover:text-pink-100 transition cursor-pointer"
           >
             <LogOut size={48} />
             Salir
